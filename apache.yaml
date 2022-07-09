@@ -1,0 +1,14 @@
+---
+- name: Install and Start Apache
+  hosts: localhost
+  tasks: 
+    - name: Install Apache
+      yum: 
+        name: httpd #name=key httpd=value
+        state: installed #argument for yum
+
+    - name: Start and Enable Apache
+      systemd:
+        name: httpd
+        enabled: yes
+        state: started      
