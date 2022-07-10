@@ -13,8 +13,11 @@ Playbook example :
 
 <img width="1005" alt="Screen Shot 2022-07-09 at 8 58 24 PM" src="https://user-images.githubusercontent.com/63433671/178128447-2717a031-c164-43c7-99ca-d57173ceeb81.png">
 
+<<<<<<< HEAD
 
 ![]()
+=======
+>>>>>>> c02c87c4f1897b4239a869ead4d014fddeddf6c0
 
 Checking syntax errors before run the playbook with below command:
 ```
