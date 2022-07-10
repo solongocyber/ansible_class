@@ -1,9 +1,9 @@
 ---
-- name: Copy file  ## Playbook name ##
-  hosts: localhost  ## Where you want to execute ##
+- name: Copy file  
+  hosts: localhost  
   tasks: 
-    - name: Copy  ## Module name ##
+    - name: Copy 
       copy:
-        src: /etc/passwd  ## File to copy ##
-        dest: /tmp/copy_passwd ## Where to copy ##
+        src: /etc/passwd  
+        dest: /tmp/copy_passwd 
         
