@@ -1,6 +1,5 @@
 
-ANSIBLE-PLAYBOOK
-### What is Ansible-playbook?
+![this is playbook](https://linuxbuz.com/wp-content/uploads/2020/07/ansible-playbook-feature.png)
 
 Playbooks are the file where Ansible code is written. Playbooks are written in YAML format. Playbooks are one of the core feature of Ansible and tell what to execute. They are like a to-do list for Ansible that contains a list of task. 
 #### Task execution
@@ -23,3 +22,5 @@ To run your playbook, use the ansible-playbook command:
 ansible-playbook apache.yaml 
 
 ```
+
+[Get more information here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
