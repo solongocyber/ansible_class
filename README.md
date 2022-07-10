@@ -11,15 +11,17 @@ A YAML starts with --- (3 hypens)
 
 Running playbooks:
 
+![]()
+
 Checking syntax errors before run the playbook with below command:
 ```
-ansible-playbook apache.yaml --syntax-check
+ansible-playbook copy_passwd.yaml --syntax-check
 
 ``` 
 To run your playbook, use the ansible-playbook command:
 
 ```
-ansible-playbook apache.yaml 
+ansible-playbook copy_passwd.yaml 
 
 ```
 
