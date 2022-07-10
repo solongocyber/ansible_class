@@ -13,11 +13,6 @@ Playbook example :
 
 <img width="1005" alt="Screen Shot 2022-07-09 at 8 58 24 PM" src="https://user-images.githubusercontent.com/63433671/178128447-2717a031-c164-43c7-99ca-d57173ceeb81.png">
 
-<<<<<<< HEAD
-
-![]()
-=======
->>>>>>> c02c87c4f1897b4239a869ead4d014fddeddf6c0
 
 Checking syntax errors before run the playbook with below command:
 ```
@@ -30,7 +25,7 @@ To run your playbook, use the ansible-playbook command:
 ansible-playbook copy_passwd.yaml 
 
 ```
-result will be 
+If there is no error, result will be :
 <img width="1029" alt="Screen Shot 2022-07-09 at 8 57 47 PM" src="https://user-images.githubusercontent.com/63433671/178128465-422cb0e3-5bd0-4a8c-a715-4bc76ffacfdd.png">
 
 
@@ -43,4 +38,4 @@ Make sure check the output
 
 
 
-[Get more information here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
+[Get more about Ansible playbook, click here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
