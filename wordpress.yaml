@@ -6,6 +6,16 @@
       yum:
         state: latest 
         update_only: yes
+    - name: Installing latest version of apache
+      yum:
+        name: httpd
+        state: latest
+    - name: Start and enable httpd
+      systemd: 
+        state: started
+        name: httpd
+        enabled: yes
+
 
       
       
