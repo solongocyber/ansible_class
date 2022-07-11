@@ -1,8 +1,11 @@
 
 ![this is playbook](https://linuxbuz.com/wp-content/uploads/2020/07/ansible-playbook-feature.png)
 
-Playbooks are the file where Ansible code is written. Playbooks are written in YAML format. Playbooks are one of the core feature of Ansible and tell what to execute. They are like a to-do list for Ansible that contains a list of task. 
-#### Task execution
+Playbooks are the file where Ansible code is written. Playbooks are written in YAML format. Playbooks are customizable scripts that are used to execute a series of tasks and commands. They are like a to-do list for Ansible and tell what to do when it connects to each machine. 
+#### Task 
+Ansible runs tasks on hosts, with SSH connection established. It runs in ansible server, opens up SSH connection to your remote hosts and then runs commands directly on them.
+What is tasks?
+A task can be anything from creating resources in AWS Cloud , to launching an instance, installing packages on a server, updating a config file or checking the time on a remote host.
 By default , Ansible execute each task in order, one at a time, agains all machines matches by the host. 
 Desired state ans 'Idempotency'
 Most Ansible modules check wheter the desired final state has already been achived, and exit without performing any action if that stae has been achived, so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
