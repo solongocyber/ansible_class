@@ -7,8 +7,8 @@ Ansible runs tasks on hosts, with SSH connection established. It runs in ansible
 What is tasks?
 A task can be anything from creating resources in AWS Cloud , to launching an instance, installing packages on a server, updating a config file or checking the time on a remote host.
 By default , Ansible execute each task in order, one at a time, agains all machines matches by the host. 
-Desired state ans 'Idempotency'
-Most Ansible modules check wheter the desired final state has already been achived, and exit without performing any action if that stae has been achived, so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
+Desired state ans `Idempotency`
+Most Ansible modules check whether the desired final state has already been achived, and exit without performing any action if that state has been achived, so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
  YAML is a strict typed language; so extra care needs to be taken while writing the YAML files.
 A YAML starts with --- (3 hypens)
 
