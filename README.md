@@ -17,6 +17,8 @@ Desired state and       ***`Idempotency`***
 
 Most Ansible modules check whether the desired final state has already been achived, and exit without performing any action  so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
 Most Ansible modules check whether the desired final state has already been achived, if it has been achived exit without performing any action  so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
+ 
+ 
  YAML is a strict typed language; so extra care needs to be taken while writing the YAML files.
 A YAML starts with --- (3 hypens)
 
