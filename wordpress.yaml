@@ -1,0 +1,11 @@
+---
+- name: Installing Wordpress
+  hosts: localhost
+  tasks:
+    - name: Update "packages"
+      yum:
+        state: latest 
+        update_only: yes
+
+      
+      
