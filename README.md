@@ -2,13 +2,21 @@
 ![this is playbook](https://linuxbuz.com/wp-content/uploads/2020/07/ansible-playbook-feature.png)
 
 Playbooks are the file where Ansible code is written. Playbooks are written in YAML format. Playbooks are customizable scripts that are used to execute a series of tasks and commands. They are like a to-do list for Ansible and tell what to do when it connects to each machine. 
-#### Task 
+
 Ansible runs tasks on hosts, with SSH connection established. It runs in ansible server, opens up SSH connection to your remote hosts and then runs commands directly on them.
-What is tasks?
+
+### What is task?
 A task can be anything from creating resources in AWS Cloud , to launching an instance, installing packages on a server, updating a config file or checking the time on a remote host.
 By default , Ansible execute each task in order, one at a time, agains all machines matches by the host. 
-Desired state ans `Idempotency`
-Most Ansible modules check whether the desired final state has already been achived, and exit without performing any action if that state has been achived, so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
+
+### What is host?
+
+The host is where the task get run. It can be any number if remote hosts that you have SSH access to, or localhost. YOur hosts respective IP address or hostnames need to be stored in an inventory file for Ansible to be aware of them. 
+
+Desired state and       ***`Idempotency`***
+
+Most Ansible modules check whether the desired final state has already been achived, and exit without performing any action  so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
+Most Ansible modules check whether the desired final state has already been achived, if it has been achived exit without performing any action  so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
  YAML is a strict typed language; so extra care needs to be taken while writing the YAML files.
 A YAML starts with --- (3 hypens)
 
