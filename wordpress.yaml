@@ -15,7 +15,14 @@
         state: started
         name: httpd
         enabled: yes
-
-
+    - name: Installing wget
+      yum:
+        name: wget
+        state: installed
+    - name: Download wordpress
+      unarchive: 
+        src: https://wordpress.org/latest.tar.gz
+        dest: /root/ansible_playbooks/ansible_class
+        remote_src: yes
       
       
