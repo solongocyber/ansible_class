@@ -32,5 +32,22 @@
         owner: apache
         group: apache
         mode: u=rwx,g=rwx,o=rwx
+    - name: Restart httpd
+      systemd:
+        state: restarted
+        name: httpd
+    - name: Installing mariadb repo
+      uri:
+        url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+        dest: /etc/yum.repos.d/
+    # - name: Mariadb-server pacakage
+    #   yum_repository:
+    #     repo: mariadb_repo_setup --mariadb-server-version=10.5
+    #     state: present
+    # - name: Installing Mariadb-server,clint,backup
+    #   package:
+    #     name: MariaDB-server,MariaDB-client,MariaDB-backup
+    #     state: present
+        
       
       
