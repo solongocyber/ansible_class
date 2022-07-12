@@ -26,12 +26,9 @@
         remote_src: yes
     - name: Copying wordpress to /var
       copy:
-        src: /root/ansible_playbooks/ansible_class/wordpress/
-        dest: /www/var/html/wordpress/
+        src: /root/ansible_playbooks/ansible_class/wordpress
+        dest: /var/www/html/
         remote_src: yes
-    - name: Changing ownership and file permissions
-      file:
-        path: /www/var/html/wordpress/
         owner: apache
         group: apache
         mode: u=rwx,g=rwx,o=rwx
