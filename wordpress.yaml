@@ -57,6 +57,10 @@
       yum:
         name: yum-utils
         state: installed
+    - name: Update the system
+      yum:
+        name: '*'
+        state: latest
     
         
     
