@@ -41,14 +41,23 @@
         name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
         state: installed
         
+        
     - name: Installing epel-release
       yum:
         name: epel-release
         state: installed
+       
+    - name: enable remi-php74
+      ini_file:
+        dest: /etc/yum.repos.d/remi-php74.repo
+        section: remi-php74
+        option: enabled
+        value: '1'
     - name: Installing yum-utils
       yum:
         name: yum-utils
-        state: latest
+        state: installed
+    
         
     
     # - name: Installing mariadb repo
