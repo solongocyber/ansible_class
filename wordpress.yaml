@@ -61,6 +61,19 @@
       yum:
         name: '*'
         state: latest
+    - name: Install PHP and all dependencies
+      yum:
+        state: installed
+        name:
+          - php
+          - php-common
+          - php-opcache
+          - php-mcrypt
+          - php-cli
+          - php-gd
+          - php-curl
+          - php-mysql
+             
     
         
     
