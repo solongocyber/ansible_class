@@ -2,44 +2,59 @@
 - name: Installing Wordpress
   hosts: localhost
   tasks:
-    - name: Update "packages"
+#     - name: Update "packages"
+#       yum:
+#         state: latest 
+#         update_only: yes
+#     - name: Installing latest version of apache
+#       yum:
+#         name: httpd
+#         state: latest
+#     - name: Start and enable httpd
+#       systemd: 
+#         state: started
+#         name: httpd
+#         enabled: yes
+#     - name: Installing wget
+#       yum:
+#         name: wget
+#         state: installed
+#     - name: Download wordpress
+#       unarchive: 
+#         src: https://wordpress.org/latest.tar.gz
+#         dest: /root/ansible_playbooks/ansible_class
+#         remote_src: yes
+#     - name: Copying wordpress to /var
+#       copy:
+#         src: /root/ansible_playbooks/ansible_class/wordpress
+#         dest: /var/www/html/
+#         remote_src: yes
+#         owner: apache
+#         group: apache
+#         mode: u=rwx,g=rwx,o=rwx
+#     - name: Restart httpd
+#       systemd:
+#         state: restarted
+#         name: httpd
+    - name: Adding EPEL and REMI Repository
       yum:
-        state: latest 
-        update_only: yes
-    - name: Installing latest version of apache
-      yum:
-        name: httpd
-        state: latest
-    - name: Start and enable httpd
-      systemd: 
-        state: started
-        name: httpd
-        enabled: yes
-    - name: Installing wget
-      yum:
-        name: wget
+        name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
         state: installed
-    - name: Download wordpress
-      unarchive: 
-        src: https://wordpress.org/latest.tar.gz
-        dest: /root/ansible_playbooks/ansible_class
-        remote_src: yes
-    - name: Copying wordpress to /var
-      copy:
-        src: /root/ansible_playbooks/ansible_class/wordpress
-        dest: /var/www/html/
-        remote_src: yes
-        owner: apache
-        group: apache
-        mode: u=rwx,g=rwx,o=rwx
-    - name: Restart httpd
-      systemd:
-        state: restarted
-        name: httpd
-    - name: Installing mariadb repo
-      uri:
-        url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
-        dest: /etc/yum.repos.d/
+        
+    - name: Installing epel-release
+      yum:
+        name: epel-release
+        state: installed
+    - name: Installing yum-utils
+      yum:
+        name: yum-utils
+        state: latest
+        
+    
+    # - name: Installing mariadb repo
+    #   uri:
+    #     url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+    #     dest: /etc/yum.repos.d/
     # - name: Mariadb-server pacakage
     #   yum_repository:
     #     repo: mariadb_repo_setup --mariadb-server-version=10.5
