@@ -2,65 +2,66 @@
 - name: Installing Wordpress
   hosts: localhost
   tasks:
-#     - name: Update "packages"
-#       yum:
-#         state: latest 
-#         update_only: yes
-#     - name: Installing latest version of apache
-#       yum:
-#         name: httpd
-#         state: latest
-#     - name: Start and enable httpd
-#       systemd: 
-#         state: started
-#         name: httpd
-#         enabled: yes
-#     - name: Installing wget
-#       yum:
-#         name: wget
-#         state: installed
-#     - name: Download wordpress
-#       unarchive: 
-#         src: https://wordpress.org/latest.tar.gz
-#         dest: /root/ansible_playbooks/ansible_class
-#         remote_src: yes
-#     - name: Copying wordpress to /var
-#       copy:
-#         src: /root/ansible_playbooks/ansible_class/wordpress
-#         dest: /var/www/html/
-#         remote_src: yes
-#         owner: apache
-#         group: apache
-#         mode: u=rwx,g=rwx,o=rwx
-#     - name: Restart httpd
-#       systemd:
-#         state: restarted
-#         name: httpd
-    - name: Adding EPEL and REMI Repository
+    - name: Update "packages"
       yum:
-        name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        state: latest 
+        update_only: yes
+    - name: Installing latest version of apache
+      yum:
+        name: httpd
+        state: latest
+    - name: Start and enable httpd
+      systemd: 
+        state: started
+        name: httpd
+        enabled: yes
+    - name: Installing wget
+      yum:
+        name: wget
         state: installed
-        
-        
+    - name: Download wordpress
+      unarchive: 
+        src: https://wordpress.org/latest.tar.gz
+        dest: /root/ansible_playbooks/ansible_class
+        remote_src: yes
+    - name: Copying wordpress to /var
+      copy:
+        src: /root/ansible_playbooks/ansible_class/wordpress
+        dest: /var/www/html/
+        remote_src: yes
+        owner: apache
+        group: apache
+        mode: g+w
+         
+         ##############  Installing PHP  ################
+    
     - name: Installing epel-release
       yum:
         name: epel-release
+        state: installed    
+    
+    - name: Adding REMI Repository
+      yum:
+        name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
         state: installed
-       
+
+    - name: Installing yum-utils
+      yum:
+        name: yum-utils
+        state: installed
+        
     - name: enable remi-php74
       ini_file:
         dest: /etc/yum.repos.d/remi-php74.repo
         section: remi-php74
         option: enabled
         value: '1'
-    - name: Installing yum-utils
-      yum:
-        name: yum-utils
-        state: installed
+    
     - name: Update the system
       yum:
         name: '*'
         state: latest
+    
     - name: Install PHP and all dependencies
       yum:
         state: installed
@@ -73,22 +74,38 @@
           - php-gd
           - php-curl
           - php-mysql
-             
-    
-        
-    
-    # - name: Installing mariadb repo
-    #   uri:
-    #     url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
-    #     dest: /etc/yum.repos.d/
-    # - name: Mariadb-server pacakage
-    #   yum_repository:
-    #     repo: mariadb_repo_setup --mariadb-server-version=10.5
-    #     state: present
-    # - name: Installing Mariadb-server,clint,backup
-    #   package:
-    #     name: MariaDB-server,MariaDB-client,MariaDB-backup
-    #     state: present
-        
-      
-      
+
+    - name: Restart httpd
+      service:
+        name: httpd 
+        state: restarted
+
+              ######### Installing Mariadb ###########
+
+    - name: Adding Mariadb repo-set-up
+      get_url:
+        url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+        dest: /etc/yum.repos.d/
+
+
+
+    - name: Mariadb repo
+      yum_repository:
+        name: mariadb
+        baseurl: http://yum.mariadb.org/10.5/centos7-amd64
+        description: MariaDB Server
+        state: present
+        gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+        gpgcheck: 1
+        keepcache: 1
+ 
+    - name: Installing Mariadb-server,clint,backup
+      package:
+        name: MariaDB-server,MariaDB-client,MariaDB-backup
+        state: present
+
+    - name: start mysql
+      service:
+        name: mysql
+        state: started
+        enabled: yes
