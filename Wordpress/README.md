@@ -28,7 +28,7 @@ Update the server
 yum update 
 ```
 
-Install Apache with the `httpd` package.
+Install Apache with the **`httpd`** package.
 
 ```
 yum install httpd -y
