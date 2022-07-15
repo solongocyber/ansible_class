@@ -49,3 +49,53 @@ firewall-cmd --permanent --zone=public --add-service=https
 systemctl reload firewalld
 
 ```
+
+Now, test the web server's pubic IP address in a browser. You should see the Apache test 123 page but sometimes I hate to see it :-)
+
+### Step 2: Add MariaDB Yum repository
+
+On Centos 7, MySQL is substituted by MariaDB.
+
+Find the right version of repository and install it under `/etc/yum.repos.d`
+
+Run the following commands to add the repository provided by Mariadb to your CentOS server.
+
+``` 
+curl -LsS -Ohttps://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+```
+
+```
+bash mariadb_repo_setup --mariadb-server-version=10.5
+```
+
+After installation check it out below
+```
+ls /ect/yum.repos.d
+```
+there are 2 new files are added `mariadb.repo` `mariadb_repo_setup`
+
+Confirm the epository is working by updateing cache
+
+```
+yum makecache
+```
+
+Check the list of available repository and confirm it
+
+```
+yum repolist
+```
+
+Now MariaDB package is ready to install
+
+### Step-3 Install MySQL (MariaDB)
+
+```
+yum install MariaDB-server MariaDB-clint MariaDB-backup
+```
+
+Start MariaDB server
+```
+systemctl start mariadb
+systemctl enable mariadb
+```
