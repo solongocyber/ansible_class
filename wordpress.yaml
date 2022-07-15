@@ -27,12 +27,17 @@
     - name: Copying wordpress to /var
       copy:
         src: /root/ansible_playbooks/ansible_class/wordpress
-        dest: /var/www/html/
+        dest: /var/www/html
         remote_src: yes
         owner: apache
         group: apache
-        mode: g+w
-         
+        
+    
+    - name: Change file permission
+      file:
+        path: /var/www/html/wordpress
+        mode: '664'
+        recurse: yes
          ##############  Installing PHP  ################
     
     - name: Installing epel-release
