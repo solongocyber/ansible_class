@@ -99,3 +99,4 @@ Start MariaDB server
 systemctl start mariadb
 systemctl enable mariadb
 ```
+https://img.shields.io/pypi/wheel/rpm?style=plastic 
