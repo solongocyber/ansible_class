@@ -99,4 +99,52 @@ Start MariaDB server
 systemctl start mariadb
 systemctl enable mariadb
 ```
-https://img.shields.io/pypi/wheel/rpm?style=plastic 
+### Step-4
+
+```
+sudo mariadb-secure-installation
+```
+Y
+Y
+Y
+Y
+Y
+
+After installation login with root password
+```
+mysql - root -p
+```
+```
+SELECT VERSION ();
+```
+```
+SHOW SATABASE();
+```
+
+Order to connect from wordpress server to database server we have to have database and user that able to get information from the database.
+
+#### Creating database
+
+CREATE DATABASE name of the database
+
+``` CREATE DATABASE class;```
+
+#### Create user account:
+CREATE USER 'createusername'@'IP address for wordpress server' IDENTIFIED BY'createpassword'
+
+```
+CREATE USER 'bob'@'IPaddress'IDENTIFIED BY'bobs password'
+```
+
+### Step-3:Grant Privileges on a Database in MySQL
+
+```
+GRANT ALL PRIVILEGES ON database_name.* TO 'database_user'@'localhost';
+```
+
+PLUSH PRIVILEGES;
+
+How to login Database from Wordpress server:
+```
+mysql -h DB-IP address -u username -p
+```
