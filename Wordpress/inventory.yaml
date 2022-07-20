@@ -1,0 +1,9 @@
+---
+all:
+  hosts:
+  children:
+    group1:
+      hosts:
+        
+        167.99.115.96:
+    
