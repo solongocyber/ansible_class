@@ -2,9 +2,11 @@
 - name: Installing Wordpress
   hosts: localhost
   tasks:
+
+when: ansible_facts['hostname'] == "wordpress-host2" 
     - name: Update "packages"
       yum:
-        state: latest 
+        state: latest
         update_only: yes
     - name: Installing latest version of apache
       yum:
@@ -15,6 +17,7 @@
         state: started
         name: httpd
         enabled: yes
+      when: 
     
        ##### Installing Wordpress ####
 
@@ -40,20 +43,15 @@
          
          ##############  Installing PHP  ################
     
-    - name: Installing epel-release
+    - name: Install additional repositories
       yum:
-        name: epel-release
-        state: installed    
-    
-    - name: Adding REMI Repository
-      yum:
-        name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        name: "{{ item }}"
         state: installed
-
-    - name: Installing yum-utils
-      yum:
-        name: yum-utils
-        state: installed
+        
+      with_items:
+        - epel-release
+        - https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+        - yum-utils
         
     - name: enable remi-php74
       ini_file:
@@ -114,3 +112,13 @@
         name: mysql
         state: started
         enabled: yes
+    
+    - name: check service
+      service_facts:
+    - name: firewall apache
+      firewalld:
+        service: http
+        immediate: True
+        permanent: True
+        state: enabled
+      when: ansible_facts.services[ 'firewalld.service' ].state == "running"
