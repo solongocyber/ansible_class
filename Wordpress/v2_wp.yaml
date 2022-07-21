@@ -3,105 +3,104 @@
   hosts: localhost
   gather_facts: yes
   vars: 
-    apache_service: httpd
-    apache_package: httpd
-    wordpress: https://wordpress.org/latest.tar.gz
+  #   apache_service: httpd
+  #   apache_package: httpd
+  #   wordpress: https://wordpress.org/latest.tar.gz
     
-    file_per: u=rwx,g=rw,o=rw
-    php_repo:
-      - epel-release
-      - https://rpms.remirepo.net/enterprise/remi-release-7.rpm
-      - yum-utils
-    change_line: remi-php74
-    php_packages:
-      - php
-      - php-common
-      - php-opcache
-      - php-mcrypt
-      - php-cli
-      - php-gd
-      - php-curl
-      - php-mysql
+  #   file_per: u=rwx,g=rw,o=rw
+  #   php_repo:
+  #     - epel-release
+  #     - https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+  #     - yum-utils
+  #   change_line: remi-php74
+  #   php_packages:
+  #     - php
+  #     - php-common
+  #     - php-opcache
+  #     - php-mcrypt
+  #     - php-cli
+  #     - php-gd
+  #     - php-curl
+  #     - php-mysql
     database_packages:
       - MariaDB-server
       - MariaDB-client
       - MariaDB-backup
-  
   tasks: 
-    - name: Update "packages"
-      yum:
-        state: latest
-        update_only: yes
-    - name: Installing latest version of apache
-      when: ansible_distribution == "CentOS"
-      yum:
-        name: "{{ apache_service }}"
-        state: latest
-    - name: Start and enable httpd
-      systemd: 
-        state: started
-        name: "{{ apache_service }}"
-        enabled: yes
+  #   - name: Update "packages"
+  #     yum:
+  #       state: latest
+  #       update_only: yes
+  #   - name: Installing latest version of apache
+  #     when: ansible_distribution == "CentOS"
+  #     yum:
+  #       name: "{{ apache_service }}"
+  #       state: latest
+  #   - name: Start and enable httpd
+  #     systemd: 
+  #       state: started
+  #       name: "{{ apache_service }}"
+  #       enabled: yes
     
     
-       ##### Installing Wordpress ####
+  #      ##### Installing Wordpress ####
 
-    - name: Download wordpress
-      unarchive: 
-        src: "{{ wordpress }}"
-        dest: /tmp
-        remote_src: yes
-    - name: Copying wordpress to /var
-      copy:
-        src: /tmp/wordpress/
-        dest: /var/www/html
-        remote_src: yes
-        owner: apache
-        group: apache
-        # mode: u=rwx,g=rw,o=rw #it wassn't changing the permissions
-    - name: Change file permission
-      file:
-        dest: /var/www/html/
-        mode: "{{ file_per }}"
-        recurse: yes
+  #   - name: Download wordpress
+  #     unarchive: 
+  #       src: "{{ wordpress }}"
+  #       dest: /tmp
+  #       remote_src: yes
+  #   - name: Copying wordpress to /var
+  #     copy:
+  #       src: /tmp/wordpress/
+  #       dest: /var/www/html
+  #       remote_src: yes
+  #       owner: apache
+  #       group: apache
+  #       # mode: u=rwx,g=rw,o=rw #it wassn't changing the permissions
+  #   - name: Change file permission
+  #     file:
+  #       dest: /var/www/html/
+  #       mode: "{{ file_per }}"
+  #       recurse: yes
 
   
-    # #      ##############  Installing PHP  ################
+  #   # #      ##############  Installing PHP  ################
     
-    - name: Install additional repositories
-      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
-      yum:
-        name: "{{ item }}"
-        state: installed
+  #   - name: Install additional repositories
+  #     when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
+  #     yum:
+  #       name: "{{ item }}"
+  #       state: installed
         
-      with_items: "{{ php_repo }}"
-      register: repo_installed
+  #     with_items: "{{ php_repo }}"
+  #     register: repo_installed
         
-    - name: enable remi-php74 on server only if distribution = CentOS and additional repo_installed = seccess
-      when: #(ansible_facts['distribution'] == "CentOS" and ansible_facts['repo_installed'] == "success")
-      - ansible_distribution == "CentOS"
-      - repo_installed is succeeded
-      ini_file:
-        dest: /etc/yum.repos.d/remi-php74.repo
-        section: "{{ change_line }}"
-        option: enabled
-        value: '1'
+  #   - name: enable remi-php74 on server only if distribution = CentOS and additional repo_installed = seccess
+  #     when: #(ansible_facts['distribution'] == "CentOS" and ansible_facts['repo_installed'] == "success")
+  #     - ansible_distribution == "CentOS"
+  #     - repo_installed is succeeded
+  #     ini_file:
+  #       dest: /etc/yum.repos.d/remi-php74.repo
+  #       section: "{{ change_line }}"
+  #       option: enabled
+  #       value: '1'
     
-    - name: Update the system
-      yum:
-        name: '*'
-        state: latest
+  #   - name: Update the system
+  #     yum:
+  #       name: '*'
+  #       state: latest
     
-    - name: Install PHP and all dependencies
-      yum:
-        state: installed
-        name: "{{ php_packages }}"
+  #   - name: Install PHP and all dependencies
+  #     yum:
+  #       state: installed
+  #       name: "{{ php_packages }}"
       
 
-    - name: Restart httpd
-      service:
-        name: "{{ apache_service }}" 
-        state: restarted
+  #   - name: Restart httpd
+  #     service:
+  #       name: "{{ apache_service }}" 
+  #       state: restarted
 
     #           ######### Installing Mariadb ###########
 
@@ -113,6 +112,7 @@
 
 
     - name: Mariadb repo
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
       yum_repository:
         name: mariadb
         baseurl: http://yum.mariadb.org/10.5/centos7-amd64
@@ -121,8 +121,12 @@
         gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
         gpgcheck: 1
         keepcache: 1
+        # register: mariadb_repo
  
     - name: Installing Mariadb-server,clint,backup
+      # when:
+      # - ansible_distribution == "CentOS"
+      # - mariadb_repo is succeeded
       yum:
         name: "{{ database_packages }}"
         state: installed
