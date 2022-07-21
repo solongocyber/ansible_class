@@ -69,7 +69,7 @@
     # #      ##############  Installing PHP  ################
     
     - name: Install additional repositories
-      when: ansible_distribution == "CentOS"
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
       yum:
         name: "{{ item }}"
         state: installed
@@ -78,7 +78,7 @@
       register: repo_installed
         
     - name: enable remi-php74 on server only if distribution = CentOS and additional repo_installed = seccess
-      when:
+      when: #(ansible_facts['distribution'] == "CentOS" and ansible_facts['repo_installed'] == "success")
       - ansible_distribution == "CentOS"
       - repo_installed is succeeded
       ini_file:
