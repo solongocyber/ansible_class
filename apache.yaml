@@ -1,4 +1,4 @@
----
+  ---
 - name: Install and Start Apache
   hosts: localhost
   tasks: 
@@ -11,4 +11,3 @@
       systemd:
         name: httpd
         enabled: yes
-        state: started
