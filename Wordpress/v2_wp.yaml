@@ -1,6 +1,7 @@
 ---
 - name: Installing Wordpress
   hosts: localhost
+  gather_facts: yes
   vars: 
     apache_service: httpd
     apache_package: httpd
@@ -11,7 +12,6 @@
       - epel-release
       - https://rpms.remirepo.net/enterprise/remi-release-7.rpm
       - yum-utils
-    re_mi: /etc/yum.repos.d/remi-php74.repo
     change_line: remi-php74
     php_packages:
       - php
@@ -33,6 +33,7 @@
         state: latest
         update_only: yes
     - name: Installing latest version of apache
+      when: ansible_distribution == "CentOS"
       yum:
         name: "{{ apache_service }}"
         state: latest
@@ -68,16 +69,20 @@
     # #      ##############  Installing PHP  ################
     
     - name: Install additional repositories
+      when: ansible_distribution == "CentOS"
       yum:
         name: "{{ item }}"
         state: installed
         
       with_items: "{{ php_repo }}"
-    
+      register: repo_installed
         
-    - name: enable remi-php74
+    - name: enable remi-php74 on server only if distribution = CentOS and additional repo_installed = seccess
+      when:
+      - ansible_distribution == "CentOS"
+      - repo_installed is succeeded
       ini_file:
-        dest: "{{ re_mi }}"
+        dest: /etc/yum.repos.d/remi-php74.repo
         section: "{{ change_line }}"
         option: enabled
         value: '1'
