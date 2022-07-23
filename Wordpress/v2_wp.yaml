@@ -111,7 +111,7 @@
 
 
 
-    - name: Mariadb repo
+    - name: Mariadb repo 
       when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
       yum_repository:
         name: mariadb
@@ -121,12 +121,12 @@
         gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
         gpgcheck: 1
         keepcache: 1
-        # register: mariadb_repo
+      register: mariadb_repo
  
     - name: Installing Mariadb-server,clint,backup
-      # when:
-      # - ansible_distribution == "CentOS"
-      # - mariadb_repo is succeeded
+      when:
+      - ansible_distribution == "CentOS"
+      - mariadb_repo is succeeded
       yum:
         name: "{{ database_packages }}"
         state: installed
