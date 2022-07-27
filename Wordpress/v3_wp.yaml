@@ -1,8 +1,23 @@
 ---
 - name: Wordpress on Ubuntu
-  hosts: ubuntu
-  # vars_files: vars.yaml
+  hosts: "{{ target_hosts }}"
+  vars_files: vars.yaml
+  gather_facts: yes
   tasks:
 
     - name: Ping Ubuntu server
       ping:
+    
+    - name: Update server and Installing httpd
+      apt:
+        name: "{{ apache_package }}"
+        state: latest
+        update_cache: yes
+      register: package_check
+
+    - name: Checking apache2 insalled
+      debug:
+        msg: "apache2 is installed"
+      when: package_check is succeeded
+
+      
