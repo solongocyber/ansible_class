@@ -1,0 +1,8 @@
+---
+- name: Wordpress on Ubuntu
+  hosts: ubuntu
+  # vars_files: vars.yaml
+  tasks:
+
+    - name: Ping Ubuntu server
+      ping:
