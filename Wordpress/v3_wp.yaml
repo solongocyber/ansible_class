@@ -5,8 +5,8 @@
   gather_facts: yes
   tasks:
 
-    - name: Ping Ubuntu server
-      ping:
+    # - name: Ping Ubuntu server
+    #   ping:
     
     - name: Update server and Installing httpd
       apt:
@@ -17,7 +17,66 @@
 
     - name: Checking apache2 insalled
       debug:
-        msg: "apache2 is installed"
+        msg: "Hello Solongo from Ubuntu"
       when: package_check is succeeded
 
-      
+    - name: Start httpd
+      service:
+        name: "{{ apache_service }}"
+        state: started
+        enabled: yes
+
+# Installing Wordpress ##
+
+    - name: Installing Wordpress
+      unarchive:
+        src: https://wordpress.org/latest.tar.gz
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Move wordpress to /var
+      copy:
+        src: /tmp/wordpress/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: u=rw,g=rw,o=r
+        remote_src: yes
+
+    - name: Removing index.html file
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Installing php
+      apt:
+        name: 
+        - libapache2-mod-php
+        - php-mysql
+        - php
+        
+        state: latest
+      register: result_php
+
+    - debug:
+        msg: php installed
+      when: result_php is succeeded
+
+    - name: Installing mariadb
+      apt:
+        name:
+        - mariadb-server
+        - mariadb-client
+        state: present
+
+    - name: Start mysql
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Restart httpd
+      service:
+        name: "{{ apache_package }}"
+        state: restarted
+
