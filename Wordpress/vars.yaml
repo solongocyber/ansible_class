@@ -1,3 +1,17 @@
 target_hosts: ubuntu
 apache_package: apache2
 apache_service: apache2.service
+one: started
+two: restarted
+three: latest
+four: absent
+wordpress: https://wordpress.org/latest.tar.gz
+dest_file: /tmp/
+src_dest: /tmp/wordpress/
+dest_file2: /var/www/html/
+owner: www-data
+group: www-data
+mode: u=rw,g=rw,o=r
+remove_file: /var/www/html/index.html
+php_package: [libapache2-mod-php,php-mysql,php]
+mariadb_server: [mariadb-server,mariadb-client]
