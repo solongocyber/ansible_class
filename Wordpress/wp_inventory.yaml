@@ -1,0 +1,9 @@
+all:
+  hosts:
+  children:
+    wordpress:
+      hosts:
+        ubuntu:
+          ansible_host: 10.108.0.4
+
+          

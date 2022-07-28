@@ -1,0 +1,80 @@
+---
+- name: Wordpress on Ubuntu
+  hosts: "{{ target_hosts }}"
+  vars_files: vars.yaml
+  gather_facts: yes
+  tasks:
+
+    # - name: Ping Ubuntu server
+    #   ping:
+    
+    - name: Update server and Installing httpd
+      apt:
+        name: "{{ apache_package }}"
+        state: "{{ three }}"
+        update_cache: yes
+      register: package_check
+
+    - name: Checking apache2 insalled
+      debug:
+        msg: "Hello Solongo from Ubuntu"
+      when: package_check is succeeded
+
+    - name: Start httpd
+      service:
+        name: "{{ apache_service }}"
+        state: "{{ one }}"
+        enabled: yes
+
+# Installing Wordpress ##
+
+    - name: Installing Wordpress
+      unarchive:
+        src: "{{ wordpress }}"
+        dest: "{{ dest_file }}"
+        remote_src: yes
+
+    - name: Move wordpress to /var
+      copy:
+        src: "{{ src_dest }}"
+        dest: "{{ dest_file2 }}"
+        owner: "{{ owner }}"
+        group: "{{ group }}"
+        mode: "{{ mode }}"
+        remote_src: yes
+
+    - name: Removing index.html file
+      file:
+        path: "{{ remove_file }}"
+        state: "{{ four }}"
+
+## Installing php
+
+    - name: Installing php
+      apt:
+        name: "{{ php_package }}"
+        state: "{{ three}}"
+      register: result_php
+
+    - debug:
+        msg: php installed
+      when: result_php is succeeded
+
+## Database-server
+
+    - name: Installing mariadb
+      apt:
+        name: "{{ mariadb_server }}"
+        state: present
+
+    - name: Start mysql
+      service:
+        name: mysql
+        state: "{{ one }}"
+        enabled: yes
+
+    - name: Restart httpd
+      service:
+        name: "{{ apache_package }}"
+        state: "{{ two }}"
+
