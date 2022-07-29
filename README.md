@@ -1,6 +1,6 @@
 
 ![this is playbook](https://linuxbuz.com/wp-content/uploads/2020/07/ansible-playbook-feature.png)
-
+playbook
 Playbooks are the file where Ansible code is written. Playbooks are written in YAML format. Playbooks are customizable scripts that are used to execute a series of tasks and commands. They are like a to-do list for Ansible and tell what to do when it connects to each machine. 
 
 Ansible runs tasks on hosts, with SSH connection established. It runs in ansible server, opens up SSH connection to your remote hosts and then runs commands directly on them.
