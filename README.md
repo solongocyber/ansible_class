@@ -1,54 +1,150 @@
 
-![this is playbook](https://linuxbuz.com/wp-content/uploads/2020/07/ansible-playbook-feature.png)
-playbook
-Playbooks are the file where Ansible code is written. Playbooks are written in YAML format. Playbooks are customizable scripts that are used to execute a series of tasks and commands. They are like a to-do list for Ansible and tell what to do when it connects to each machine. 
+## Wordpress Installation
 
-Ansible runs tasks on hosts, with SSH connection established. It runs in ansible server, opens up SSH connection to your remote hosts and then runs commands directly on them.
-
-### What is task?
-A task can be anything from creating resources in AWS Cloud , to launching an instance, installing packages on a server, updating a config file or checking the time on a remote host.
-By default , Ansible execute each task in order, one at a time, agains all machines matches by the host. 
-
-### What is host?
-
-The host is where the task get run. It can be any number if remote hosts that you have SSH access to, or localhost. YOur hosts respective IP address or hostnames need to be stored in an inventory file for Ansible to be aware of them. 
-
-Desired state and       ***`Idempotency`***
-
-Most Ansible modules check whether the desired final state has already been achived, and exit without performing any action  so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
-Most Ansible modules check whether the desired final state has already been achived, if it has been achived exit without performing any action  so that repeating the task does not change the final state. Wheter you run a playbook once, or multiple times, the outcome should be the same. 
+### Prerequisites:
  
+ - A sudo user account (root privileges)
+ -  LAMP stack
  
- YAML is a strict typed language; so extra care needs to be taken while writing the YAML files.
-A YAML starts with --- (3 hypens)
+#### Required Versions of LAMP stack:
 
-Playbook example :
+|LAMP|VERSIONS|
+|---|---|
+|Linux| Centos-7|
+|Apache|--|
+|Mariadb|10.5 or greater|
+|PHP|7.4 or greater|
 
-<img width="1005" alt="Screen Shot 2022-07-09 at 8 58 24 PM" src="https://user-images.githubusercontent.com/63433671/178128447-2717a031-c164-43c7-99ca-d57173ceeb81.png">
+A LAMP stack is a collection of open-source software bundled and installed to enable a server to provide web resources.  Consinsting of Linux, Apache,MySQL, and PHP. LAMP stack makes it easy to build dynamic websites and application and host a wide range of web services. 
 
+In this guide, you will install the LAMP stack on a CentOS-7 server.
 
-Checking syntax errors before run the playbook with below command:
+### Step 1: Install Apache
+
+On CentOS, Apache is identified by the https package. To install the web server, we need to update the system, then attempt to install httpd.
+
+Update the server
 ```
-ansible-playbook copy_passwd.yaml --syntax-check
+yum update 
+```
+
+Install Apache with the **`httpd`** package.
+
+```
+yum install httpd -y
+```
+
+Once installed, start the Apache daemon and enable it to start automatically during system boot.
+ ```
+ systemctl start httpd
+ systemctl enable httpd
+ ```
+If firewall enabled, you must open the http and https transport port for the web server to function.
+
+```
+firewall-cmd --permanent --zone=public --add-service=http
+
+firewall-cmd --permanent --zone=public --add-service=https
+
+systemctl reload firewalld
+
+```
+
+Now, test the web server's pubic IP address in a browser. You should see the Apache test 123 page but sometimes I hate to see it :-)
+
+### Step 2: Add MariaDB Yum repository
+
+On Centos 7, MySQL is substituted by MariaDB.
+
+Find the right version of repository and install it under `/etc/yum.repos.d`
+
+Run the following commands to add the repository provided by Mariadb to your CentOS server.
 
 ``` 
-To run your playbook, use the ansible-playbook command:
+curl -LsS -Ohttps://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+```
 
 ```
-ansible-playbook copy_passwd.yaml 
+bash mariadb_repo_setup --mariadb-server-version=10.5
+```
+
+After installation check it out below
+```
+ls /ect/yum.repos.d
+```
+there are 2 new files are added `mariadb.repo` `mariadb_repo_setup`
+
+Confirm the epository is working by updateing cache
 
 ```
-If there is no error, result will be :
-<img width="1029" alt="Screen Shot 2022-07-09 at 8 57 47 PM" src="https://user-images.githubusercontent.com/63433671/178128465-422cb0e3-5bd0-4a8c-a715-4bc76ffacfdd.png">
+yum makecache
+```
 
+Check the list of available repository and confirm it
 
-Make sure check the output
+```
+yum repolist
+```
 
-<img width="765" alt="Screen Shot 2022-07-09 at 8 47 21 PM" src="https://user-images.githubusercontent.com/63433671/178128412-e76828fd-27f1-4bd2-bd05-d05b5dfd6b37.png">
+Now MariaDB package is ready to install
 
-<img width="760" alt="Screen Shot 2022-07-09 at 9 03 25 PM" src="https://user-images.githubusercontent.com/63433671/178128430-ce03582d-07db-4ace-ac3a-4b3816779232.png">
+### Step-3 Install MySQL (MariaDB)
 
+```
+yum install MariaDB-server MariaDB-clint MariaDB-backup
+```
 
+Start MariaDB server
+```
+systemctl start mariadb
+systemctl enable mariadb
+```
+### Step-4
 
+```
+sudo mariadb-secure-installation
+```
+Y
+Y
+Y
+Y
+Y
 
-[Get more about Ansible playbook, click here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
+After installation login with root password
+```
+mysql - root -p
+```
+```
+SELECT VERSION ();
+```
+```
+SHOW SATABASE();
+```
+
+Order to connect from wordpress server to database server we have to have database and user that able to get information from the database.
+
+#### Creating database
+
+CREATE DATABASE name of the database
+
+``` CREATE DATABASE class;```
+
+#### Create user account:
+CREATE USER 'createusername'@'IP address for wordpress server' IDENTIFIED BY'createpassword'
+
+```
+CREATE USER 'bob'@'IPaddress'IDENTIFIED BY'bobs password'
+```
+
+### Step-3:Grant Privileges on a Database in MySQL
+
+```
+GRANT ALL PRIVILEGES ON database_name.* TO 'database_user'@'localhost';
+```
+
+PLUSH PRIVILEGES;
+
+How to login Database from Wordpress server:
+```
+mysql -h DB-IP address -u username -p
+```
